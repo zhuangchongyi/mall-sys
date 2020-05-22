@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.mall.mapper.MallGoodsImageMapper">
+    
+    <resultMap type="MallGoodsImage" id="MallGoodsImageResult">
+        <result property="imageId"    column="image_id"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="imageName"    column="image_name"    />
+        <result property="url"    column="url"    />
+    </resultMap>
+
+    <sql id="selectMallGoodsImageVo">
+        select image_id, goods_id, image_name, url from mall_goods_image
+    </sql>
+
+    <select id="selectMallGoodsImageList" parameterType="MallGoodsImage" resultMap="MallGoodsImageResult">
+        <include refid="selectMallGoodsImageVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="imageName != null  and imageName != ''"> and image_name like concat('%', #{imageName}, '%')</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+        </where>
+    </select>
+    
+    <select id="selectMallGoodsImageById" parameterType="Long" resultMap="MallGoodsImageResult">
+        <include refid="selectMallGoodsImageVo"/>
+        where image_id = #{imageId}
+    </select>
+        
+    <insert id="insertMallGoodsImage" parameterType="MallGoodsImage" useGeneratedKeys="true" keyProperty="imageId">
+        insert into mall_goods_image
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null ">goods_id,</if>
+            <if test="imageName != null  and imageName != ''">image_name,</if>
+            <if test="url != null  and url != ''">url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="goodsId != null ">#{goodsId},</if>
+            <if test="imageName != null  and imageName != ''">#{imageName},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallGoodsImage" parameterType="MallGoodsImage">
+        update mall_goods_image
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsId != null ">goods_id = #{goodsId},</if>
+            <if test="imageName != null  and imageName != ''">image_name = #{imageName},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+        </trim>
+        where image_id = #{imageId}
+    </update>
+
+    <delete id="deleteMallGoodsImageById" parameterType="Long">
+        delete from mall_goods_image where image_id = #{imageId}
+    </delete>
+
+    <delete id="deleteMallGoodsImageByIds" parameterType="String">
+        delete from mall_goods_image where image_id in 
+        <foreach item="imageId" collection="array" open="(" separator="," close=")">
+            #{imageId}
+        </foreach>
+    </delete>
+
+    <select id="selectMallGoodsImageListByGoodsId" parameterType="Long" resultMap="MallGoodsImageResult">
+        <include refid="selectMallGoodsImageVo"/>
+        where goods_id = #{goodsId}
+    </select>
+
+</mapper>
