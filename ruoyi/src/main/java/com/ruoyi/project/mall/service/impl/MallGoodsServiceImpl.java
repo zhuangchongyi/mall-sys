@@ -71,7 +71,7 @@ public class MallGoodsServiceImpl implements IMallGoodsService
     public int updateMallGoods(MallGoods mallGoods)
     {
         mallGoods.setUpdateBy(SecurityUtils.getUsername());
-        mallGoods.setUpdateTime(new Date());
+        mallGoods.setUpdateDate(new Date());
         return mallGoodsMapper.updateMallGoods(mallGoods);
     }
 

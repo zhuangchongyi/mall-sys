@@ -1,5 +1,7 @@
 package com.ruoyi.project.mall.service.impl;
 
+import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.exception.BaseException;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.file.FileUploadUtils;
@@ -58,7 +60,6 @@ public class MallSlideshowServiceImpl implements IMallSlideshowService
     @Override
     public int insertMallSlideshow(MallSlideshow mallSlideshow)
     {
-        redisCache.deleteObject("mallSlideshowsCache");
         mallSlideshow.setCreateBy(SecurityUtils.getUsername());
         mallSlideshow.setCreateTime(DateUtils.getNowDate());
         return mallSlideshowMapper.insertMallSlideshow(mallSlideshow);
@@ -73,7 +74,6 @@ public class MallSlideshowServiceImpl implements IMallSlideshowService
     @Override
     public int updateMallSlideshow(MallSlideshow mallSlideshow)
     {
-        redisCache.deleteObject("mallSlideshowsCache");
         return mallSlideshowMapper.updateMallSlideshow(mallSlideshow);
     }
 
@@ -86,7 +86,6 @@ public class MallSlideshowServiceImpl implements IMallSlideshowService
     @Override
     public int deleteMallSlideshowByIds(Long... slideshowIds)
     {
-        redisCache.deleteObject("mallSlideshowsCache");
         List<String> list = mallSlideshowMapper.selectUrlList(slideshowIds);
         int row = mallSlideshowMapper.deleteMallSlideshowByIds(slideshowIds);
         FileUploadUtils.deleteFiles(list.toArray(new String[list.size()]));
@@ -101,9 +100,11 @@ public class MallSlideshowServiceImpl implements IMallSlideshowService
     }
 
     @Override
-    public List<MallSlideshow> selectSlideshowListByStatus() {
+    public int selectSlideshowListByStatus() {
         List<MallSlideshow> mallSlideshows = mallSlideshowMapper.selectMallSlideshow();
-        redisCache.setCacheList("mallSlideshowsCache" ,mallSlideshows);
-        return mallSlideshows;
+        if (mallSlideshows.isEmpty()) throw new BaseException("生效失败");
+        redisCache.deleteObject(Constants.SLIDESHOW_CACHE);
+        redisCache.setCacheObject(Constants.SLIDESHOW_CACHE, mallSlideshows);
+        return 1;
     }
 }

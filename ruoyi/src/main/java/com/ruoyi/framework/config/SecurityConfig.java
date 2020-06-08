@@ -1,5 +1,6 @@
 package com.ruoyi.framework.config;
 
+import com.ruoyi.project.wx.user.authentication.WxAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -29,7 +30,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
      */
     @Autowired
     private UserDetailsService userDetailsService;
-    
+    /**
+     * 自定义微信登录验证
+     */
+    @Autowired
+    private WxAuthenticationProvider wxAuthenticationProvider;
+
     /**
      * 认证失败处理类
      */
@@ -105,8 +111,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/webjars/**").anonymous()
                 .antMatchers("/*/api-docs").anonymous()
                 .antMatchers("/druid/**").anonymous()
-                // 微信的请求不拦截
-                .antMatchers("/wx/api/**").anonymous()
+                // 微信的商品请求不拦截
+                .antMatchers("/wx/goods/**").permitAll()
+                // 微信用户登录注册不拦截
+                .antMatchers("/wx/user/login","/wx/user/logout","/wx/user/register","/wx/user/code","/wx/user/openid").permitAll()
+
                 // 除上面外的所有请求全部需要鉴权认证
                 .anyRequest().authenticated()
                 .and()
@@ -133,5 +142,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+        // 添加微信用户登录校验
+        auth.authenticationProvider(wxAuthenticationProvider);
     }
 }

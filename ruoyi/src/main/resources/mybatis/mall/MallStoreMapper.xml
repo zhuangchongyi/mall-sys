@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.mall.mapper.MallStoreMapper">
+    
+    <resultMap type="MallStore" id="MallStoreResult">
+        <result property="storeId"    column="store_id"    />
+        <result property="storeName"    column="store_name"    />
+        <result property="storeAddress"    column="store_address"    />
+        <result property="storeTelephone"    column="store_telephone"    />
+        <result property="storeCoord"    column="store_coord"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="storeUrl"    column="store_url"    />
+    </resultMap>
+
+    <sql id="selectMallStoreVo">
+        select store_id, store_name, store_address, store_telephone, store_coord, status, create_time, create_by, update_time, update_by, store_url from mall_store
+    </sql>
+
+    <select id="selectMallStoreList" parameterType="MallStore" resultMap="MallStoreResult">
+        <include refid="selectMallStoreVo"/>
+        <where>  
+            <if test="storeName != null  and storeName != ''"> and store_name like concat('%', #{storeName}, '%')</if>
+            <if test="storeAddress != null  and storeAddress != ''"> and store_address = #{storeAddress}</if>
+            <if test="storeTelephone != null  and storeTelephone != ''"> and store_telephone = #{storeTelephone}</if>
+            <if test="storeCoord != null  and storeCoord != ''"> and store_coord = #{storeCoord}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="storeUrl != null  and storeUrl != ''"> and store_url = #{storeUrl}</if>
+        </where>
+    </select>
+    
+    <select id="selectMallStoreById" parameterType="Long" resultMap="MallStoreResult">
+        <include refid="selectMallStoreVo"/>
+        where store_id = #{storeId}
+    </select>
+        
+    <insert id="insertMallStore" parameterType="MallStore" useGeneratedKeys="true" keyProperty="storeId">
+        insert into mall_store
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="storeName != null  and storeName != ''">store_name,</if>
+            <if test="storeAddress != null  and storeAddress != ''">store_address,</if>
+            <if test="storeTelephone != null  and storeTelephone != ''">store_telephone,</if>
+            <if test="storeCoord != null  and storeCoord != ''">store_coord,</if>
+            <if test="status != null  and status != ''">status,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="createBy != null  and createBy != ''">create_by,</if>
+            <if test="updateTime != null ">update_time,</if>
+            <if test="updateBy != null  and updateBy != ''">update_by,</if>
+            <if test="storeUrl != null  and storeUrl != ''">store_url,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="storeName != null  and storeName != ''">#{storeName},</if>
+            <if test="storeAddress != null  and storeAddress != ''">#{storeAddress},</if>
+            <if test="storeTelephone != null  and storeTelephone != ''">#{storeTelephone},</if>
+            <if test="storeCoord != null  and storeCoord != ''">#{storeCoord},</if>
+            <if test="status != null  and status != ''">#{status},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="createBy != null  and createBy != ''">#{createBy},</if>
+            <if test="updateTime != null ">#{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">#{updateBy},</if>
+            <if test="storeUrl != null  and storeUrl != ''">#{storeUrl},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallStore" parameterType="MallStore">
+        update mall_store
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="storeName != null  and storeName != ''">store_name = #{storeName},</if>
+            <if test="storeAddress != null  and storeAddress != ''">store_address = #{storeAddress},</if>
+            <if test="storeTelephone != null  and storeTelephone != ''">store_telephone = #{storeTelephone},</if>
+            <if test="storeCoord != null  and storeCoord != ''">store_coord = #{storeCoord},</if>
+            <if test="status != null  and status != ''">status = #{status},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
+            <if test="updateTime != null ">update_time = #{updateTime},</if>
+            <if test="updateBy != null  and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="storeUrl != null  and storeUrl != ''">store_url = #{storeUrl},</if>
+        </trim>
+        where store_id = #{storeId}
+    </update>
+
+    <delete id="deleteMallStoreById" parameterType="Long">
+        delete from mall_store where store_id = #{storeId}
+    </delete>
+
+    <delete id="deleteMallStoreByIds" parameterType="String">
+        delete from mall_store where store_id in 
+        <foreach item="storeId" collection="array" open="(" separator="," close=")">
+            #{storeId}
+        </foreach>
+    </delete>
+    
+</mapper>

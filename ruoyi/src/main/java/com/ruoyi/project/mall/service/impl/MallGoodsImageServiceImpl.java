@@ -95,7 +95,7 @@ public class MallGoodsImageServiceImpl implements IMallGoodsImageService
     }
 
     @Override
-    public List<MallGoodsImage> selectMallGoodsImageListByGoodsId(Long goodsId) {
-        return mallGoodsImageMapper.selectMallGoodsImageListByGoodsId(goodsId);
+    public List<MallGoodsImage> findGoodsImageByGoodsId(Long goodsId) {
+        return mallGoodsImageMapper.findGoodsImageByGoodsId(goodsId);
     }
 }

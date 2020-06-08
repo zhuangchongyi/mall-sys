@@ -60,5 +60,10 @@ public interface MallGoodsImageMapper
      */
     public int deleteMallGoodsImageByIds(Long[] imageIds);
 
-    List<MallGoodsImage> selectMallGoodsImageListByGoodsId(Long goodsId);
+    /**
+     * 根据商品id查询图片
+     * @param goodsId
+     * @return
+     */
+    List<MallGoodsImage> findGoodsImageByGoodsId(Long goodsId);
 }

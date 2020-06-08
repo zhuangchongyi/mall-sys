@@ -35,18 +35,23 @@ public class MallGoodsImageController extends BaseController
     @GetMapping("/list/{goodsId}")
     public AjaxResult list(@PathVariable Long goodsId)
     {
-        List<MallGoodsImage> list = mallGoodsImageService.selectMallGoodsImageListByGoodsId(goodsId);
+        List<MallGoodsImage> list = mallGoodsImageService.findGoodsImageByGoodsId(goodsId);
         return AjaxResult.success(list);
     }
 
+    /**
+     * 添加商品明细图片
+     * @param file
+     * @param goodsImage
+     * @return
+     * @throws IOException
+     */
     @PreAuthorize("@ss.hasPermi('mall:goods:edit')")
-    @Log(title = "添加商品图片", businessType = BusinessType.INSERT)
+    @Log(title = "添加商品明细图片", businessType = BusinessType.INSERT)
     @PostMapping("/uploadGoodsImage")
     public AjaxResult uploadGoodsImage(@RequestParam("file") MultipartFile file,MallGoodsImage goodsImage) throws IOException {
         if (!file.isEmpty()) {
             String url = FileUploadUtils.upload(RuoYiConfig.getGoodsPath(), file);
-            System.err.println(url);
-
             goodsImage.setUrl(url);
             goodsImage.setImageName(file.getOriginalFilename());
             int row = mallGoodsImageService.insertMallGoodsImage(goodsImage);
@@ -63,6 +68,11 @@ public class MallGoodsImageController extends BaseController
         return AjaxResult.error("上传图片异常，请联系管理员");
     }
 
+    /**
+     * 删除商品图片
+     * @param goodsImage
+     * @return
+     */
     @PreAuthorize("@ss.hasPermi('mall:goods:edit')")
     @Log(title = "删除商品图片", businessType = BusinessType.DELETE)
     @DeleteMapping("/deleteGoodsImage")

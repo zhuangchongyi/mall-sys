@@ -6,14 +6,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="MallGoods" id="MallGoodsResult">
         <result property="goodsId"    column="goods_id"    />
-        <result property="storeId"    column="store_id"    />
         <result property="mainTitle"    column="main_title"    />
         <result property="subTitle"    column="sub_title"    />
         <result property="price"    column="price"    />
         <result property="oldPrice"    column="old_price"    />
         <result property="goodsImg"    column="goods_img"    />
         <result property="status"    column="status"    />
+        <result property="sort"    column="sort"    />
         <result property="delFlag"    column="del_flag"    />
+        <result property="url"    column="url"    />
+        <result property="storeId"    column="store_id"    />
         <result property="createDate"    column="create_date"    />
         <result property="createBy"    column="create_by"    />
         <result property="updateDate"    column="update_date"    />
@@ -21,19 +23,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectMallGoodsVo">
-        select mall_goods.goods_id, store_id, main_title, sub_title, price, old_price, status, del_flag, create_date, create_by, update_date, update_by,image.url goods_img from mall_goods mall_goods
+        select goods_id,sort, main_title, sub_title, price, old_price, status,url, del_flag, create_date, create_by, update_date, update_by,store_id from mall_goods
+    </sql>
+    <sql id="oneMallGoodsVo">
+        select goods_id,sort, main_title, sub_title, price, old_price, status,url,store_id from mall_goods
     </sql>
 
-    <sql id="linkGoodsImage">
-        left join mall_goods_image image on image.goods_id = mall_goods.goods_id
-        and image.image_id =(select min(image_id) from mall_goods_image mgi where mgi.goods_id = mall_goods.goods_id)
-    </sql>
     <select id="selectMallGoodsList" parameterType="MallGoods" resultMap="MallGoodsResult">
         <include refid="selectMallGoodsVo"/>
-        <include refid="linkGoodsImage"/>
         <where>
             del_flag =0
-            <if test="storeId != null "> and store_id = #{storeId}</if>
             <if test="mainTitle != null  and mainTitle != ''"> and main_title = #{mainTitle}</if>
             <if test="subTitle != null  and subTitle != ''"> and sub_title = #{subTitle}</if>
             <if test="price != null "> and price = #{price}</if>
@@ -42,38 +41,39 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="createDate != null "> and create_date = #{createDate}</if>
             <if test="updateDate != null "> and update_date = #{updateDate}</if>
         </where>
+        order by sort desc, status desc, create_date desc,goods_id desc
     </select>
 
     <select id="selectMallGoodsById" parameterType="Long" resultMap="MallGoodsResult">
-        <include refid="selectMallGoodsVo"/>
-        <include refid="linkGoodsImage"/>
+        <include refid="oneMallGoodsVo"/>
         where mall_goods.goods_id = #{goodsId}
     </select>
 
     <insert id="insertMallGoods" parameterType="MallGoods" useGeneratedKeys="true" keyProperty="goodsId">
         insert into mall_goods
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="storeId != null ">store_id,</if>
             <if test="mainTitle != null  and mainTitle != ''">main_title,</if>
             <if test="subTitle != null  and subTitle != ''">sub_title,</if>
             <if test="price != null ">price,</if>
             <if test="oldPrice != null ">old_price,</if>
             <if test="status != null ">status,</if>
+            <if test="sort != null ">sort,</if>
             <if test="delFlag != null ">del_flag,</if>
+            <if test="url != null ">url,</if>
             <if test="createDate != null ">create_date,</if>
             <if test="createBy != null  and createBy != ''">create_by,</if>
             <if test="updateDate != null ">update_date,</if>
             <if test="updateBy != null  and updateBy != ''">update_by,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="storeId != null ">#{storeId},</if>
             <if test="mainTitle != null  and mainTitle != ''">#{mainTitle},</if>
             <if test="subTitle != null  and subTitle != ''">#{subTitle},</if>
             <if test="price != null ">#{price},</if>
             <if test="oldPrice != null ">#{oldPrice},</if>
-            <if test="goodsImg != null  and goodsImg != ''">#{goodsImg},</if>
             <if test="status != null ">#{status},</if>
+            <if test="sort != null ">#{sort},</if>
             <if test="delFlag != null ">#{delFlag},</if>
+            <if test="url != null  and url != ''">#{url},</if>
             <if test="createDate != null ">#{createDate},</if>
             <if test="createBy != null  and createBy != ''">#{createBy},</if>
             <if test="updateDate != null ">#{updateDate},</if>
@@ -84,13 +84,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateMallGoods" parameterType="MallGoods">
         update mall_goods
         <trim prefix="SET" suffixOverrides=",">
-            <if test="storeId != null ">store_id = #{storeId},</if>
             <if test="mainTitle != null  and mainTitle != ''">main_title = #{mainTitle},</if>
             <if test="subTitle != null  and subTitle != ''">sub_title = #{subTitle},</if>
             <if test="price != null ">price = #{price},</if>
             <if test="oldPrice != null ">old_price = #{oldPrice},</if>
             <if test="status != null ">status = #{status},</if>
+            <if test="sort != null ">sort = #{sort},</if>
             <if test="delFlag != null ">del_flag = #{delFlag},</if>
+            <if test="url != null ">url = #{url},</if>
             <if test="createDate != null ">create_date = #{createDate},</if>
             <if test="createBy != null  and createBy != ''">create_by = #{createBy},</if>
             <if test="updateDate != null ">update_date = #{updateDate},</if>
@@ -115,6 +116,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{goodsId}
         </foreach>
     </delete>
+
     <update id="updateSelectMallGoodsStatus">
         update mall_goods
         <trim prefix="SET" suffixOverrides=",">
@@ -127,9 +129,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <select id="selectMallGoodsListByStatus" resultMap="MallGoodsResult">
-        select mall_goods.goods_id, store_id, main_title, sub_title, price, old_price,image.url goods_img from mall_goods mall_goods
-        <include refid="linkGoodsImage"/>
+        select goods_id, main_title, sub_title, price, old_price,url from mall_goods
         where status = 1 and del_flag = 0
-        order by sort desc, create_date desc
+        order by sort desc, status desc, create_date desc,goods_id desc
     </select>
 </mapper>

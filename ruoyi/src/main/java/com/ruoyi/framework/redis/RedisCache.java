@@ -2,6 +2,7 @@ package com.ruoyi.framework.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.support.atomic.RedisAtomicInteger;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -194,5 +195,20 @@ public class RedisCache
     public Collection<String> keys(String pattern)
     {
         return redisTemplate.keys(pattern);
+    }
+
+    /**
+     * 获取自增值, 没有重新插入
+     * @param key
+     * @return
+     */
+    public Integer getIncrementNum(String key){
+        RedisAtomicInteger atomicInteger = new RedisAtomicInteger(key, redisTemplate.getConnectionFactory());
+        Integer num = atomicInteger.incrementAndGet();
+        if (null == num || num.intValue() == 0){
+            System.err.println("设置自增值过期时间为1天");
+            redisTemplate.expire(key,1,TimeUnit.DAYS);
+        }
+        return num;
     }
 }

@@ -64,5 +64,5 @@ public interface IMallSlideshowService
      *
      * @return 轮播图集合
      */
-    List<MallSlideshow> selectSlideshowListByStatus();
+    int selectSlideshowListByStatus();
 }

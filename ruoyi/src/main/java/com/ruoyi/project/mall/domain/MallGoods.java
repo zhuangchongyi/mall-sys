@@ -21,9 +21,8 @@ public class MallGoods extends BaseEntity
     /** 商品id */
     private Long goodsId;
 
-    /** 店铺id-外键 */
-    @Excel(name = "店铺id-外键")
-    private Long storeId;
+    /** 店铺编号*/
+    private Integer storeId;
 
     /** 商品主标题 */
     @Excel(name = "商品主标题")
@@ -43,7 +42,11 @@ public class MallGoods extends BaseEntity
 
     /** 封面图 */
     @Excel(name = "封面图")
-    private String goodsImg;
+    private String url;
+
+    /** 排序 */
+    @Excel(name = "排序")
+    private Integer sort;
 
     /** 上架状态 */
     @Excel(name = "上架状态")
@@ -53,13 +56,13 @@ public class MallGoods extends BaseEntity
     private Integer delFlag;
 
     /** 创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd hh:mm")
     private Date createDate;
 
     /** 修改时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "修改时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd hh:mm")
+    @Excel(name = "修改时间", width = 30, dateFormat = "yyyy-MM-dd hh:mm")
     private Date updateDate;
 
     public void setGoodsId(Long goodsId) 
@@ -70,15 +73,6 @@ public class MallGoods extends BaseEntity
     public Long getGoodsId() 
     {
         return goodsId;
-    }
-    public void setStoreId(Long storeId) 
-    {
-        this.storeId = storeId;
-    }
-
-    public Long getStoreId() 
-    {
-        return storeId;
     }
 
     public void setMainTitle(String mainTitle)
@@ -116,15 +110,6 @@ public class MallGoods extends BaseEntity
     public Double getOldPrice() 
     {
         return oldPrice;
-    }
-    public void setGoodsImg(String goodsImg)
-    {
-        this.goodsImg = goodsImg;
-    }
-
-    public String getGoodsImg()
-    {
-        return goodsImg;
     }
     public void setStatus(Integer status)
     {
@@ -167,17 +152,41 @@ public class MallGoods extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("goodsId", getGoodsId())
-            .append("storeId", getStoreId())
             .append("mainTitle", getMainTitle())
             .append("subTitle", getSubTitle())
             .append("price", getPrice())
             .append("oldPrice", getOldPrice())
             .append("status", getStatus())
             .append("delFlag", getDelFlag())
+            .append("url", getUrl())
             .append("createDate", getCreateDate())
             .append("createBy", getCreateBy())
             .append("updateDate", getUpdateDate())
             .append("updateBy", getUpdateBy())
             .toString();
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Integer getSort() {
+        return sort;
+    }
+
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+    public Integer getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(Integer storeId) {
+        this.storeId = storeId;
     }
 }

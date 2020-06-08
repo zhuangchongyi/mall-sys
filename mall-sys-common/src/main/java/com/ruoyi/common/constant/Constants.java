@@ -4,16 +4,13 @@ import io.jsonwebtoken.Claims;
 
 /**
  * 通用常量信息
- * 
- * @author ruoyi
  */
-public class Constants
-{
+public class Constants {
     /**
      * UTF-8 字符集
      */
     public static final String UTF8 = "UTF-8";
-    
+
     /**
      * 通用成功标识
      */
@@ -53,6 +50,12 @@ public class Constants
      * 验证码有效期（分钟）
      */
     public static final Integer CAPTCHA_EXPIRATION = 2;
+    /**
+     * @Author zhuangchongyi
+     * @Description 手机验证码过期时间
+     * @Date 14:27 2020/5/28
+     **/
+    public static final Integer CAPTCHA_EXPIRATION_PHONE = 5;
 
     /**
      * 令牌
@@ -98,4 +101,36 @@ public class Constants
      * 资源映射路径 前缀
      */
     public static final String RESOURCE_PREFIX = "/profile";
+
+
+    /**
+     * 轮播图缓存key
+     */
+    public static final String SLIDESHOW_CACHE = "slideshow_cache";
+
+    /**
+     * 轮播图缓存key
+     */
+    public static final String ORDER_SERIAL_NUMBER = "order_serial_number";
+
+    /**
+     * 轮播图缓存key
+     */
+    public static final String WX_ORDER_SERIAL_NUMBER = "wx_order_serial_number";
+
+    /**
+     * 空格
+     */
+    public static final String SPACE = " ";
+
+    /**
+     * 用户地址默认状态
+     */
+    public static final String ADDRESS_STATUS_DEF = "1";
+
+    /**
+     * 用户地址非默认状态
+     */
+    public static final String ADDRESS_STATUS = "0";
+
 }

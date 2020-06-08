@@ -1,17 +1,19 @@
 package com.ruoyi.framework.web.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Entity基类
  * 
  * @author ruoyi
  */
+//@JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class BaseEntity implements Serializable
 {
     private static final long serialVersionUID = 1L;

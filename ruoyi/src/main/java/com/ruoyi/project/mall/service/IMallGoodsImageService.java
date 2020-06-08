@@ -65,5 +65,5 @@ public interface IMallGoodsImageService
      * @param goodsId
      * @return
      */
-    List<MallGoodsImage> selectMallGoodsImageListByGoodsId(Long goodsId);
+    List<MallGoodsImage> findGoodsImageByGoodsId(Long goodsId);
 }

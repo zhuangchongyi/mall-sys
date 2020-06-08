@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.mall.mapper.MallOrderDetailMapper">
+    
+    <resultMap type="MallOrderDetail" id="MallOrderDetailResult">
+        <result property="orderDetailId"    column="order_detail_id"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="goodsId"    column="goods_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="storeId"    column="store_id"    />
+        <result property="price"    column="price"    />
+        <result property="specsName"    column="specs_name"    />
+        <result property="specsId"    column="specs_id"    />
+        <result property="mainTitle"    column="main_title"    />
+        <result property="subTitle"    column="sub_title"    />
+        <result property="num"    column="num"    />
+        <result property="url"    column="url"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="orderTime"    column="order_time"    />
+    </resultMap>
+
+    <sql id="selectMallOrderDetailVo">
+        select order_detail_id, order_num,order_time, goods_id, user_id, store_id, price, specs_name, specs_id, main_title, sub_title, num, url, create_time from mall_order_detail
+    </sql>
+
+    <select id="selectMallOrderDetailList" parameterType="MallOrderDetail" resultMap="MallOrderDetailResult">
+        <include refid="selectMallOrderDetailVo"/>
+        <where>  
+            <if test="goodsId != null "> and goods_id = #{goodsId}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="storeId != null "> and store_id = #{storeId}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="specsName != null  and specsName != ''"> and specs_name like concat('%', #{specsName}, '%')</if>
+            <if test="specsId != null "> and specs_id = #{specsId}</if>
+            <if test="mainTitle != null  and mainTitle != ''"> and main_title = #{mainTitle}</if>
+            <if test="subTitle != null  and subTitle != ''"> and sub_title = #{subTitle}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="url != null  and url != ''"> and url = #{url}</if>
+        </where>
+    </select>
+    
+    <select id="selectMallOrderDetailById" parameterType="Long" resultMap="MallOrderDetailResult">
+        <include refid="selectMallOrderDetailVo"/>
+        where order_detail_id = #{orderDetailId}
+    </select>
+        
+    <insert id="insertMallOrderDetail" parameterType="MallOrderDetail" useGeneratedKeys="true" keyProperty="orderDetailId">
+        insert into mall_order_detail
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNum != null  and orderNum != ''">order_num,</if>
+            <if test="goodsId != null ">goods_id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="storeId != null ">store_id,</if>
+            <if test="price != null ">price,</if>
+            <if test="specsName != null  and specsName != ''">specs_name,</if>
+            <if test="specsId != null ">specs_id,</if>
+            <if test="mainTitle != null  and mainTitle != ''">main_title,</if>
+            <if test="subTitle != null  and subTitle != ''">sub_title,</if>
+            <if test="num != null ">num,</if>
+            <if test="url != null  and url != ''">url,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="orderTime != null ">order_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNum != null  and orderNum != ''">#{orderNum},</if>
+            <if test="goodsId != null ">#{goodsId},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="storeId != null ">#{storeId},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="specsName != null  and specsName != ''">#{specsName},</if>
+            <if test="specsId != null ">#{specsId},</if>
+            <if test="mainTitle != null  and mainTitle != ''">#{mainTitle},</if>
+            <if test="subTitle != null  and subTitle != ''">#{subTitle},</if>
+            <if test="num != null ">#{num},</if>
+            <if test="url != null  and url != ''">#{url},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="orderTime != null ">#{orderTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallOrderDetail" parameterType="MallOrderDetail">
+        update mall_order_detail
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNum != null  and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="goodsId != null ">goods_id = #{goodsId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="storeId != null ">store_id = #{storeId},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="specsName != null  and specsName != ''">specs_name = #{specsName},</if>
+            <if test="specsId != null ">specs_id = #{specsId},</if>
+            <if test="mainTitle != null  and mainTitle != ''">main_title = #{mainTitle},</if>
+            <if test="subTitle != null  and subTitle != ''">sub_title = #{subTitle},</if>
+            <if test="num != null ">num = #{num},</if>
+            <if test="url != null  and url != ''">url = #{url},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="orderTime != null ">order_time = #{orderTime},</if>
+        </trim>
+        where order_detail_id = #{orderDetailId}
+    </update>
+
+    <delete id="deleteMallOrderDetailById" parameterType="Long">
+        delete from mall_order_detail where order_detail_id = #{orderDetailId}
+    </delete>
+
+    <delete id="deleteMallOrderDetailByIds" parameterType="String">
+        delete from mall_order_detail where order_detail_id in 
+        <foreach item="orderDetailId" collection="array" open="(" separator="," close=")">
+            #{orderDetailId}
+        </foreach>
+    </delete>
+
+    <select id="findUserOrderDetailsByOrderNum" resultMap="MallOrderDetailResult">
+        <include refid="selectMallOrderDetailVo"/>
+        where order_num = #{orderNum}
+        order by create_time asc
+    </select>
+    
+</mapper>

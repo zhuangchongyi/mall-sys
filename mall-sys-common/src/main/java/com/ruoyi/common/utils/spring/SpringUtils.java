@@ -111,4 +111,5 @@ public final class SpringUtils implements BeanFactoryPostProcessor
     {
         return (T) AopContext.currentProxy();
     }
+
 }

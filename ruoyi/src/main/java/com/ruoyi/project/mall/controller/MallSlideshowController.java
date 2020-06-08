@@ -5,6 +5,7 @@ import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
 import com.ruoyi.framework.config.RuoYiConfig;
+import com.ruoyi.framework.redis.RedisCache;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
@@ -30,7 +31,8 @@ public class MallSlideshowController extends BaseController
 {
     @Autowired
     private IMallSlideshowService mallSlideshowService;
-
+    @Autowired
+    private RedisCache redisCache;
     /**
      * 查询轮播图列表
      */
@@ -102,4 +104,18 @@ public class MallSlideshowController extends BaseController
     {
         return toAjax(mallSlideshowService.deleteMallSlideshowByIds(slideshowIds));
     }
+
+
+    /**
+     * redis缓存
+     */
+    @PreAuthorize("@ss.hasPermi('mall:slideshow:edit')")
+    @Log(title = "缓存轮播图", businessType = BusinessType.DELETE)
+	@PutMapping("/enable")
+    public AjaxResult enable()
+    {
+        return toAjax(mallSlideshowService.selectSlideshowListByStatus());
+    }
+
+
 }

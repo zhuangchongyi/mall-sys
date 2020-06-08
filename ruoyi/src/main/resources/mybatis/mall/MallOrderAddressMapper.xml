@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.mall.mapper.MallOrderAddressMapper">
+    
+    <resultMap type="MallOrderAddress" id="MallOrderAddressResult">
+        <result property="orderAddressId"    column="order_address_id"    />
+        <result property="orderNum"    column="order_num"    />
+        <result property="userId"    column="user_id"    />
+        <result property="storeId"    column="store_id"    />
+        <result property="name"    column="name"    />
+        <result property="phone"    column="phone"    />
+        <result property="addr"    column="addr"    />
+        <result property="country"    column="country"    />
+        <result property="province"    column="province"    />
+        <result property="city"    column="city"    />
+        <result property="district"    column="district"    />
+        <result property="detail"    column="detail"    />
+        <result property="postalCode"    column="postal_code"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectMallOrderAddressVo">
+        select order_address_id, order_num, user_id, store_id, name, phone, addr, country, province, city, district, detail, postal_code, create_time from mall_order_address
+    </sql>
+
+    <select id="selectMallOrderAddressList" parameterType="MallOrderAddress" resultMap="MallOrderAddressResult">
+        <include refid="selectMallOrderAddressVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="storeId != null "> and store_id = #{storeId}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="addr != null  and addr != ''"> and addr = #{addr}</if>
+            <if test="country != null  and country != ''"> and country = #{country}</if>
+            <if test="province != null  and province != ''"> and province = #{province}</if>
+            <if test="city != null  and city != ''"> and city = #{city}</if>
+            <if test="district != null  and district != ''"> and district = #{district}</if>
+            <if test="detail != null  and detail != ''"> and detail = #{detail}</if>
+            <if test="postalCode != null  and postalCode != ''"> and postal_code = #{postalCode}</if>
+        </where>
+    </select>
+    
+        <select id="selectMallOrderAddressById" resultMap="MallOrderAddressResult">
+        <include refid="selectMallOrderAddressVo"/>
+        where order_address_id = #{orderAddressId}
+    </select>
+        
+    <insert id="insertMallOrderAddress" parameterType="MallOrderAddress" useGeneratedKeys="true" keyProperty="orderAddressId">
+        insert into mall_order_address
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orderNum != null  and orderNum != ''">order_num,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="storeId != null ">store_id,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="phone != null  and phone != ''">phone,</if>
+            <if test="addr != null  and addr != ''">addr,</if>
+            <if test="country != null  and country != ''">country,</if>
+            <if test="province != null  and province != ''">province,</if>
+            <if test="city != null  and city != ''">city,</if>
+            <if test="district != null  and district != ''">district,</if>
+            <if test="detail != null  and detail != ''">detail,</if>
+            <if test="postalCode != null  and postalCode != ''">postal_code,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orderNum != null  and orderNum != ''">#{orderNum},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="storeId != null ">#{storeId},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="phone != null  and phone != ''">#{phone},</if>
+            <if test="addr != null  and addr != ''">#{addr},</if>
+            <if test="country != null  and country != ''">#{country},</if>
+            <if test="province != null  and province != ''">#{province},</if>
+            <if test="city != null  and city != ''">#{city},</if>
+            <if test="district != null  and district != ''">#{district},</if>
+            <if test="detail != null  and detail != ''">#{detail},</if>
+            <if test="postalCode != null  and postalCode != ''">#{postalCode},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateMallOrderAddress" parameterType="MallOrderAddress">
+        update mall_order_address
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNum != null  and orderNum != ''">order_num = #{orderNum},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="storeId != null ">store_id = #{storeId},</if>
+            <if test="name != null  and name != ''">name = #{name},</if>
+            <if test="phone != null  and phone != ''">phone = #{phone},</if>
+            <if test="addr != null  and addr != ''">addr = #{addr},</if>
+            <if test="country != null  and country != ''">country = #{country},</if>
+            <if test="province != null  and province != ''">province = #{province},</if>
+            <if test="city != null  and city != ''">city = #{city},</if>
+            <if test="district != null  and district != ''">district = #{district},</if>
+            <if test="detail != null  and detail != ''">detail = #{detail},</if>
+            <if test="postalCode != null  and postalCode != ''">postal_code = #{postalCode},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where order_address_id = #{orderAddressId}
+    </update>
+
+    <delete id="deleteMallOrderAddressById" parameterType="Long">
+        delete from mall_order_address where order_address_id = #{orderAddressId}
+    </delete>
+
+    <delete id="deleteMallOrderAddressByIds" parameterType="String">
+        delete from mall_order_address where order_address_id in 
+        <foreach item="orderAddressId" collection="array" open="(" separator="," close=")">
+            #{orderAddressId}
+        </foreach>
+    </delete>
+
+    <select id="findUserOrderAddressByOrderNum" resultMap="MallOrderAddressResult">
+        <include refid="selectMallOrderAddressVo"/>
+        where order_num = #{orderNum}
+        limit 1
+    </select>
+    
+</mapper>

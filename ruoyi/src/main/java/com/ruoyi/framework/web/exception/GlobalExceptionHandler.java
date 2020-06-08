@@ -81,7 +81,8 @@ public class GlobalExceptionHandler
     public AjaxResult handleException(Exception e)
     {
         log.error(e.getMessage(), e);
-        return AjaxResult.error(e.getMessage());
+//        return AjaxResult.error(e.getMessage());
+        return AjaxResult.error(" ~_~ 系统异常",e.getMessage());
     }
 
     /**

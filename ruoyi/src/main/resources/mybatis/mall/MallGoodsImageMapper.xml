@@ -64,9 +64,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <select id="selectMallGoodsImageListByGoodsId" parameterType="Long" resultMap="MallGoodsImageResult">
+    <select id="findGoodsImageByGoodsId" parameterType="Long" resultMap="MallGoodsImageResult">
         <include refid="selectMallGoodsImageVo"/>
         where goods_id = #{goodsId}
+        order by image_id asc
     </select>
 
 </mapper>

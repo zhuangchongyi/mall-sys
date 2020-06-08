@@ -1,7 +1,10 @@
 package com.ruoyi.project.mall.controller;
 
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.file.FileUploadUtils;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
+import com.ruoyi.framework.config.RuoYiConfig;
 import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
@@ -10,7 +13,9 @@ import com.ruoyi.project.mall.service.IMallGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -54,19 +59,29 @@ public class MallGoodsController extends BaseController
     @PreAuthorize("@ss.hasPermi('mall:goods:add')")
     @Log(title = "新增商品", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody MallGoods mallGoods)
-    {
+    public AjaxResult add(MallGoods mallGoods, @RequestParam("file") MultipartFile file) throws IOException {
+        if (null != file && !file.isEmpty()){
+            mallGoods.setUrl(FileUploadUtils.upload(RuoYiConfig.getGoodsPath(), file));
+        }
         return toAjax(mallGoodsService.insertMallGoods(mallGoods));
     }
 
     /**
-     * 修改商品管理
+     * 修改商品
      */
     @PreAuthorize("@ss.hasPermi('mall:goods:edit')")
     @Log(title = "修改商品", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody MallGoods mallGoods)
-    {
+    public AjaxResult edit(MallGoods mallGoods, @RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+        if (null != file && !file.isEmpty()){
+            String url = FileUploadUtils.upload(RuoYiConfig.getGoodsPath(), file);
+            if (!StringUtils.isEmpty(url)) {
+                FileUploadUtils.deleteFile(mallGoods.getUrl());
+                mallGoods.setUrl(url);
+            }
+        } else {
+            mallGoods.setUrl(null);
+        }
         return toAjax(mallGoodsService.updateMallGoods(mallGoods));
     }
 
