@@ -40,15 +40,15 @@ spring:
   messages:
     # 国际化资源文件路径
     basename: i18n/messages
-  profiles: 
+  profiles:
     active: druid
   # 文件上传
   servlet:
-     multipart:
-       # 单个文件大小
-       max-file-size:  10MB
-       # 设置总上传的文件大小
-       max-request-size:  20MB
+    multipart:
+      # 单个文件大小
+      max-file-size:  10MB
+      # 设置总上传的文件大小
+      max-request-size:  20MB
   # 服务模块
   devtools:
     restart:
@@ -79,44 +79,44 @@ spring:
 
 # token配置
 token:
-    # 令牌自定义标识
-    header: Authorization
-    # 令牌秘钥
-    secret: abcdefghijklmnopqrstuvwxyz
-    # 令牌有效期（默认30分钟）
-    expireTime: 30 # 720半天过期
-  
+  # 令牌自定义标识
+  header: Authorization
+  # 令牌秘钥
+  secret: abcdefghijklmnopqrstuvwxyz
+  # 令牌有效期（默认30分钟）
+  expireTime: 360
+
 # MyBatis配置
 mybatis:
-    # 搜索指定包别名
-    typeAliasesPackage: com.ruoyi.project.**.domain
-    # 配置mapper的扫描，找到所有的mapper.xml映射文件
-    mapperLocations: classpath*:mybatis/**/*Mapper.xml
-    # 加载全局的配置文件
-    configLocation: classpath:mybatis/mybatis-config.xml
+  # 搜索指定包别名
+  typeAliasesPackage: com.ruoyi.project.**.domain
+  # 配置mapper的扫描，找到所有的mapper.xml映射文件
+  mapperLocations: classpath*:mybatis/**/*Mapper.xml
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis/mybatis-config.xml
 
 # PageHelper分页插件
-pagehelper: 
+pagehelper:
   helperDialect: mysql
   reasonable: false # 禁用合理化时，如果pageNum<1或pageNum>pages会返回空数据
   supportMethodsArguments: true
-  params: count=countSql 
+  params: count=countSql
 
 # Swagger配置
 swagger:
   enable: true
 
 # 防止XSS攻击
-xss: 
+xss:
   # 过滤开关
   enabled: true
   # 排除链接（多个用逗号分隔）
   excludes: /system/notice/*
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
-  
+
 # 代码生成
-gen: 
+gen:
   # 作者
   author: zhuangcy
   # 默认生成包路径 system 需改成自己的模块名称 如 system monitor tool
